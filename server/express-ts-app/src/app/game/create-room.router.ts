@@ -29,7 +29,7 @@ router.post(BASE_ENDPOINT + '/create-room', (req, res) => {
     let output: createRoomReqBody = req.body;
     let payload = {
       name: output.name,
-      room: createRoom()
+      room: createRoom(output.name)
     }
 
     let payloadOutput = JSON.stringify(payload);
