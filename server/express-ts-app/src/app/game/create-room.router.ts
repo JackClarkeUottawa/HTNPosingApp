@@ -4,32 +4,24 @@ import { default as jwt } from 'jsonwebtoken';
 import { createBrotliCompress } from 'zlib';
 import createRoom from '../../utils/db/createRoom';
 import getSecretKey from '../../utils/auth/secretKey';
+import { createRoomReqBody, jwtPayloadCreateRoom, responseBody } from '../../utils/interfaces/create-room-interfaces'
+
 
 
 
 // Export module for registering router in express app
 export const router: Router = Router();
 
-interface createRoomReqBody{
-  name: String;
-}
 
-interface responseBody{
-  success: Boolean,
-  jwt: String,
-  errorMessage?: String 
-  
-
-}
 
 router.post(BASE_ENDPOINT + '/create-room', (req, res) => {
   try {
-    
-  
     let output: createRoomReqBody = req.body;
-    let payload = {
-      name: output.name,
-      room: createRoom(output.name)
+    createRoom(output.name).then((result) => {
+     
+      let payload : jwtPayloadCreateRoom = {
+        name: output.name,
+        room: result
     }
 
     let payloadOutput = JSON.stringify(payload);
@@ -43,6 +35,9 @@ router.post(BASE_ENDPOINT + '/create-room', (req, res) => {
 
 
     res.send(JSON.stringify(responseBody));
+
+    })
+    
   }
   catch (e){
     let responseBody : responseBody =  {

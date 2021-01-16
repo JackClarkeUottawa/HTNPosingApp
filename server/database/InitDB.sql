@@ -8,6 +8,7 @@
 	listOfUsers Integer[],
 	currentRound Integer,
 	picturesPerRound Integer[][]
+	timestamp timestamp default current_timestamp
 	
 );
 
