@@ -15,3 +15,5 @@ pool.on('error', (err, client) => {
 
 
 export const CREATE_ROOM_QUERY = fs.readFileSync('src/utils/db/CreateRoom.sql').toString();
+
+export const ADD_PICTURE_QUERY = fs.readFileSync('src/utils/db/AddPicture.sql').toString();

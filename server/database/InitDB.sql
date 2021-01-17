@@ -13,7 +13,7 @@ create table if not exists games(
 
 create table if not exists pictures(
 	id SERIAL primary key,
-	userID char(26),
+	userID Integer,
 	pictureURI char(40)
 
 );

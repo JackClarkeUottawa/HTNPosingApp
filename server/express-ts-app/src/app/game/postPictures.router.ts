@@ -8,11 +8,21 @@ import { headerFormat, PostPicturesReqBody, responseBody } from '../../utils/int
 import path from 'path';
 import os from 'os';
 import fs from 'fs';
-import saveToGCP from '../../utils/googlecloud/googleCloudFunctions';
+
 import { nanoid } from 'nanoid';
 
+import { jwtPayloadCreateRoom } from '../../utils/interfaces/create-room-interfaces';
+import addPathtoDB from '../../utils/db/addPicture';
+import { RSA_NO_PADDING } from 'constants';
+import { runModel, saveToGCP } from '../../utils/googlecloud/googleCloudFunctions';
+
+import calculateScore from '../../utils/scoreCalculations/calculateScore'
 
 
+interface responseDecode{
+  type: any,
+  data: Buffer
+}
 
 
 // Export module for registering router in express app
@@ -20,30 +30,42 @@ export const router: Router = Router();
 
 
 
+
+
 router.post(BASE_ENDPOINT + '/pictures', (req, res) => {
   try {
     let webToken = req.headers.jwt as string;
-    let body = jwt.verify(webToken, getSecretKey());
+    let body :jwtPayloadCreateRoom = jwt.verify(webToken, getSecretKey()) as jwtPayloadCreateRoom;
   
 
   
-    let filename = nanoid();
+    let filename = nanoid() +".jpg";
     let output: PostPicturesReqBody = req.body;
-    let buff = new Buffer(output.imageSTR.toString(), 'base64');
-    fs.writeFileSync(path.join(os.tmpdir(), filename), buff);
-    saveToGCP(path.join(os.tmpdir(), filename), filename).then((gcpath: string) => {
-      //addPathtoDB(gcpath, userName)
-      fs.unlinkSync(path.join(os.tmpdir(), filename));
-    })
+    let imagestring = output.imageSTR.split(';base64,').pop();
+    if (imagestring == undefined) {
+      throw "badimagestring error";
+    }
     
+    fs.writeFileSync(path.join(os.tmpdir(), filename), imagestring, { encoding:'base64'});
+    
+    
+    saveToGCP(path.join(os.tmpdir(), filename), filename).then( async (gcpath: string) => {
+      addPathtoDB(gcpath, body.room)//TODO should also add image id to the result
+      fs.unlinkSync(path.join(os.tmpdir(), filename));
+      let modelResult = await runModel(gcpath);
 
-   
+      let response: responseBody = {
+        success: false,
+        score: -1
+      }
+      response.score = calculateScore(modelResult, modelResult);
+      response.success = true;
+      res.send(response);
 
-
-
-  
+    })
   }
-  catch (e){
+  catch (e) {
+    
     let responseBody : responseBody =  {
       success: false,
       score: -1,

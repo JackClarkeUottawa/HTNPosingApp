@@ -6,7 +6,7 @@ export default async function createRoom(name: String) {
   try {
     let result = await pool.query(CREATE_ROOM_QUERY, [name])
 
-    return result.rows[0].id
+    return result.rows[0].id as number;
   } catch (e) {
     throw e;
     

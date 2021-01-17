@@ -13,5 +13,6 @@ export interface responseBody{
 
 export interface jwtPayloadCreateRoom{
   name: String,
-  room: number
+  room: number,//aka game
+  
 }

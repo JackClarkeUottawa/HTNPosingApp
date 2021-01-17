@@ -18,14 +18,14 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
 
 create table if not exists pictures(
 	id SERIAL primary key,
-	userID char(26),
+	userID Integer,
 	pictureURI char(40)
 
 );
 
 create table if not exists users(
 	id SERIAL primary key,
-	userID char(26)
+	userID Integer
 	
 );
 commit;

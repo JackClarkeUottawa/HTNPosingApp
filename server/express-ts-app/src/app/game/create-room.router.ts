@@ -22,6 +22,7 @@ router.post(BASE_ENDPOINT + '/create-room', (req, res) => {
       let payload : jwtPayloadCreateRoom = {
         name: output.name,
         room: result
+        
     }
 
     let payloadOutput = JSON.stringify(payload);
