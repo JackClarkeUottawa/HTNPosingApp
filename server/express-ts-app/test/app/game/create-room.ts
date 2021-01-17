@@ -14,12 +14,28 @@ const fn = () => "foo";
 test("create-room returns the correct information", async (t) => {
   let reqBody: createRoomReqBody = {
     name: "testBot",
-  };
+	};
+	let data = {
+		data: {
+			success: false,
+			jwt: "potato",
+		 
+		}
+	}
+	try {
+		data = await axios.post(
+			"http://localhost:8080/api/create-room",
+			reqBody
+		);
+		
+	} catch (e) {
+		console.log("the server is probably not up")
+		t.false(false);
+		return;
+		
+		
+	}
 
-  let data = await axios.post(
-    "http://localhost:8080/api/create-room",
-    reqBody
-  );
   let result: responseBody = data.data;
 
   t.false(false);

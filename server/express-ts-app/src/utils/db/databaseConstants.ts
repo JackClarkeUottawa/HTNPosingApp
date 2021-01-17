@@ -3,7 +3,7 @@ import fs from 'fs';
 export const pool = new Pool({
   user: 'root',
   host: 'localhost',
-  database: 'PoserDB',
+  database: 'postgres',
   password: 'password',
   port: 5432,
 })

@@ -1,6 +1,9 @@
 {
   "name": "express-ts-app",
   "version": "0.0.1",
+  "engines": {
+    "node": ">=15.5.1"
+  },
   "description": "express-ts-app initialised with create-express-typescript-application.",
   "main": "src/index.ts",
   "scripts": {
@@ -40,6 +43,7 @@
   },
   "dependencies": {
     "@ava/typescript": "^1.1.1",
+    "@google-cloud/storage": "^5.7.2",
     "axios": "^0.21.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
@@ -48,6 +52,8 @@
     "json": "^10.0.0",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
+    "nanoid": "^3.1.20",
+    "node": "^15.4.0",
     "pg": "^8.5.1"
   },
   "ava": {

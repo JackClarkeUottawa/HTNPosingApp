@@ -1,20 +1,25 @@
+begin;
 create table if not exists games(
 	id SERIAL PRIMARY key,
-	listOfUsers Integer[12],
+	listOfUsers Integer[],
 	currentRound Integer,
-	picturesPerRound Integer[12][12]
+	picturesPerRound Integer[][],
+	created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 	
 );
 
 create table if not exists pictures(
 	id SERIAL primary key,
 	userID char(26),
-	picture bytea 
+	pictureURI char(40)
 
 );
 
 create table if not exists users(
 	id SERIAL primary key,
-	userName char(26)
+	userID char(26)
 	
-)
+);
+
+
+commit;

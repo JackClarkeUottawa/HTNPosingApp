@@ -1,0 +1,1 @@
+This is the server for the  app, the database can be launched in docker. The only part of the code that is not in this repo is the code to detect pose. This code was borrowed form https://dev.to/alvardev/posenet-tensorflow-js-on-gcp-1934.
